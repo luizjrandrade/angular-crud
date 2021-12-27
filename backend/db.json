@@ -1,0 +1,24 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Ferrari",
+      "price": 21.3
+    },
+    {
+      "id": 2,
+      "name": "Porsche",
+      "price": 11.1
+    },
+    {
+      "id": 3,
+      "name": "Maclaren",
+      "price": 900
+    },
+    {
+      "name": "Landrover",
+      "price": "55.80",
+      "id": 4
+    }
+  ]
+}
