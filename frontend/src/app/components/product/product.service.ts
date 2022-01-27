@@ -13,6 +13,7 @@ export class ProductService {
 
   constructor(private snackBar: MatSnackBar, private http: HttpClient) { }
 
+  //messagem na tela da criação do produto
   showMessage(msg: string): void{
     this.snackBar.open(msg, '', {
       duration: 3000,
@@ -21,7 +22,14 @@ export class ProductService {
     })
   }
 
+  //criação de produtos
   create(product: Product): Observable<Product>{
     return this.http.post<Product>(this.baseUrl, product)
   }
+
+  //array de produtos
+  read(): Observable<Product[]>{
+    return this.http.get<Product[]>(this.baseUrl)
+  }
+
 }
