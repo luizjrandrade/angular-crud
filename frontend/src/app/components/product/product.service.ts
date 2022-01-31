@@ -5,13 +5,13 @@ import { Observable } from 'rxjs';
 import { Product } from './product.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductService {
 
   baseUrl = "http://localhost:3001/products"
 
-  constructor(private snackBar: MatSnackBar, private http: HttpClient) { }
+  constructor(private snackBar: MatSnackBar, private http: HttpClient) {}
 
   //messagem na tela da criação do produto
   showMessage(msg: string): void{
