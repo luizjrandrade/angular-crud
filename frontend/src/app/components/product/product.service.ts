@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable } from 'rxjs';
+import { catchError, EMPTY, map, Observable } from 'rxjs';
 import { Product } from './product.model';
 
 @Injectable({
@@ -14,17 +14,28 @@ export class ProductService {
   constructor(private snackBar: MatSnackBar, private http: HttpClient) {}
 
   //messagem na tela da criação do produto
-  showMessage(msg: string): void{
-    this.snackBar.open(msg, '', {
+  showMessage(msg: string, isError: boolean = false): void{
+    this.snackBar.open(msg, 'X', {
       duration: 3000,
       horizontalPosition: "right",
-      verticalPosition: "top"
-    })
+      verticalPosition: "top",
+      panelClass: isError ? ['msg-error'] : ['msg-sucess']
+    });
   }
 
   //criação de produtos
   create(product: Product): Observable<Product>{
-    return this.http.post<Product>(this.baseUrl, product)
+    return this.http.post<Product>(this.baseUrl, product).pipe(
+      map(obj => obj),
+      catchError((e) => this.errorHandler(e))
+    );
+  }
+
+  //trata erros
+  errorHandler(e: any): Observable<any>{
+    //return this.http.get<Product[]>(this.baseUrl);
+    this.showMessage('Ocorreu um erro', true);
+    return EMPTY;
   }
 
   //array de produtos
@@ -33,7 +44,7 @@ export class ProductService {
   }
 
   //retornar o Id
-  readById(id: string): Observable<Product>{
+  readById(id: string | null): Observable<Product>{
     const url = `${this.baseUrl}/${id}`
     return this.http.get<Product>(url)
   }
@@ -42,6 +53,12 @@ export class ProductService {
   update(product: Product): Observable<Product>{
     const url = `${this.baseUrl}/${product.id}`
     return this.http.put<Product>(url, product)
+  }
+
+  //deletar
+  delete(id: string): Observable<Product>{
+    const url = `${this.baseUrl}/${id}`;
+    return this.http.delete<Product>(url);
   }
 
 
